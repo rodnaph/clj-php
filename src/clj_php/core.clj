@@ -10,7 +10,7 @@
         arg-str)))
 
 (defn to-func-arg
-  "Transform an argument with a function, number or scalar"
+  "Transform function argument (number or scalar)"
   [arg]
   (let [s (str arg)]
     (if (re-matches #"\d+" s) s
@@ -24,8 +24,10 @@
 
 (defn parse-func 
   "Parse a function call"
-  [[name & args]]
-  (str name "(" (parse-func-args args) ")"))
+  [[func-name & args]]
+  (format "%s(%s)"
+          func-name
+          (parse-func-args args)))
 
 (defn parse-body 
   "Parse a function body"
@@ -40,8 +42,11 @@
 
 (defn parse-defn 
   "Parse a function definition"
-  [[_ name args] & body]
-  (str "function " name "(" (parse-defn-args args) ") {" (parse-body body) "}"))
+  [[_ func-name args] & body]
+  (format "function %s(%s) {%s}"
+          func-name
+          (parse-defn-args args)
+          (parse-body body)))
 
 (defn -main [& args])
 

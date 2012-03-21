@@ -1,13 +1,13 @@
+
 # clj-php
 
-FIXME: write description
+A very naive experiment on compiling Clojure to PHP.  Hmmm...
 
-## Usage
+## Tests
 
-FIXME: write
+Tests written with Midje, run them with...
 
-## License
+```bash
+lein midje
+```
 
-Copyright (C) 2012 FIXME
-
-Distributed under the Eclipse Public License, the same as Clojure.

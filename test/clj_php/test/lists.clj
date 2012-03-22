@@ -1,5 +1,5 @@
 
-(clj-php.test.lists
+(ns clj-php.test.lists
   (:use clj-php.lists
         midje.sweet))
 

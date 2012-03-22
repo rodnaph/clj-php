@@ -1,6 +1,8 @@
 
 (ns clj-php.core)
 
+(declare parse-body)
+
 (defn parse-ns
   "Parse a namespace declaration"
   [[_ ns-name]]
@@ -42,17 +44,6 @@
           func-name
           (parse-func-args args)))
 
-(defn to-expr
-  "Parses an expression"
-  [expr]
-  "")
-
-(defn parse-body 
-  "Parse a function body"
-  [& exprs] 
-  (reduce str 
-    (map to-expr exprs)))
-
 (defn parse-defn-args 
   "Parse an argument list"
   [args]
@@ -66,6 +57,21 @@
           func-name
           (parse-defn-args args)
           (parse-body body)))
+
+(defn to-expr
+  "Parses an expression"
+  [expr]
+  (let [[type & rest] expr]
+    (condp = (str type)
+      "def" (parse-def expr)
+      "defn" (parse-defn expr)
+      "")))
+
+(defn parse-body 
+  "Parse a function body"
+  [& exprs] 
+  (reduce str 
+    (map to-expr exprs)))
 
 (defn -main [& args])
 

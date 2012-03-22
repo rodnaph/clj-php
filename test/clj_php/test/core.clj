@@ -28,5 +28,6 @@
   (parse-ns '(ns foo.bar)) => "namespace foo\\bar;")
 
 (facts "about parsing expression bodies"
+  (parse-body '(def x "1") '(defn foo [x])) => "$x = \"1\";function foo($x) {}"
   (parse-body '(def x "1") '(def y "2")) => "$x = \"1\";$y = \"2\";")
 

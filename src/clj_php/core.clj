@@ -2,6 +2,11 @@
 (ns clj-php.core
   (:gen-class))
 
+(def clojure-core-functions {
+  "*" "multiply"
+  "println" "println"
+})
+
 (declare parse-body parse-func)
 
 (defn parse-ns
@@ -39,11 +44,20 @@
   (parse-args 
     (map to-func-arg args)))
 
+(defn parse-func-name
+  "Resolves clojure names to php functions"
+  [func-name]
+  (let [str-name (str func-name)
+        core-name (get clojure-core-functions str-name)]
+    (if (nil? core-name)
+        str-name
+        (format "\\clojure\\core\\%s" core-name))))
+
 (defn parse-func 
   "Parse a function call"
   [[func-name & args]]
   (format "%s(%s)"
-          func-name
+          (parse-func-name func-name)
           (parse-func-args args)))
 
 (defn parse-defn-args 
@@ -86,7 +100,12 @@
   (let [exprs (format "'(%s)" (slurp path))]
     (apply parse-body (load-string exprs))))
 
+(defn php-includes []
+  (slurp "php/clojure/core.php"))
+
 (defn -main [& args]
   (let [path (first args)]
-    (println (parse-file path))))
+    (println (format "%s%s"
+                     (php-includes)
+                     (parse-file path)))))
 

@@ -32,5 +32,8 @@
   (parse-body '(def x "1") '(def y "2")) => "$x = \"1\";$y = \"2\";")
 
 (facts "about parsing files"
-  (parse-file "test/example.cljp") => "namespace cljphp\\example;$x = \"123\";function double($x) {return *($x, 2);}println(double($x));")
+  (parse-file "test/example.cljp") => "namespace cljphp\\example;$x = \"123\";function double($x) {return \\clojure\\core\\multiply($x, 2);}\\clojure\\core\\println(double($x));")
+
+(facts "about function names"
+  (parse-func-name "*") => "\\clojure\\core\\multiply")
 

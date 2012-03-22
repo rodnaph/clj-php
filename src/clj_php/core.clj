@@ -1,5 +1,6 @@
 
-(ns clj-php.core)
+(ns clj-php.core
+  (:gen-class))
 
 (declare parse-body parse-func)
 
@@ -41,7 +42,7 @@
 (defn parse-func 
   "Parse a function call"
   [[func-name & args]]
-  (format "%s(%s);"
+  (format "%s(%s)"
           func-name
           (parse-func-args args)))
 
@@ -53,11 +54,14 @@
 
 (defn parse-defn 
   "Parse a function definition"
-  [[_ func-name args] & body]
-  (format "function %s(%s) {%s}"
-          func-name
-          (parse-defn-args args)
-          (apply parse-body body)))
+  [[_ func-name args & body]]
+  (let [body-str (apply parse-body body)]
+    (format "function %s(%s) {return %s}"
+            func-name
+            (parse-defn-args args)
+            (if (> (count body-str) 0)
+                body-str 
+                "null;"))))
 
 (defn to-expr
   "Parses an expression"
@@ -68,7 +72,7 @@
       "defn" (parse-defn expr)
       "ns" (parse-ns expr)
       "" ""
-      (parse-func expr))))
+      (str (parse-func expr) ";"))))
 
 (defn parse-body 
   "Parse a function body"
@@ -82,5 +86,7 @@
   (let [exprs (format "'(%s)" (slurp path))]
     (apply parse-body (load-string exprs))))
 
-(defn -main [& args])
+(defn -main [& args]
+  (let [path (first args)]
+    (println (parse-file path))))
 

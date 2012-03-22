@@ -31,3 +31,6 @@
   (parse-body '(def x "1") '(defn foo [x])) => "$x = \"1\";function foo($x) {}"
   (parse-body '(def x "1") '(def y "2")) => "$x = \"1\";$y = \"2\";")
 
+(facts "about parsing files"
+  (parse-file "test/example.cljp") => "namespace cljphp\\example;$x = 123;function double($x) {multiply($x, 2);}println(double($x));")
+

@@ -3,7 +3,7 @@
 
 (def x 123)
 
-(defn double [x] (x * 2))
+(defn double [x] (* x 2))
 
 (println (double x))
 

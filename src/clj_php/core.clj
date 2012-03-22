@@ -1,7 +1,7 @@
 
 (ns clj-php.core)
 
-(declare parse-body)
+(declare parse-body parse-func)
 
 (defn parse-ns
   "Parse a namespace declaration"
@@ -28,8 +28,9 @@
   "Transform function argument (number or scalar)"
   [arg]
   (let [s (str arg)]
-    (if (re-matches #"\d+" s) s
-        (str "$" s))))
+    (cond (list? arg) (parse-func arg)
+          (re-matches #"\d+" s) s
+          :else (str "$" s))))
 
 (defn parse-func-args
   "Parse arguments to a function call"
@@ -56,7 +57,7 @@
   (format "function %s(%s) {%s}"
           func-name
           (parse-defn-args args)
-          (parse-body body)))
+          (apply parse-body body)))
 
 (defn to-expr
   "Parses an expression"
@@ -65,13 +66,21 @@
     (condp = (str type)
       "def" (parse-def expr)
       "defn" (parse-defn expr)
-      "")))
+      "ns" (parse-ns expr)
+      "" ""
+      (parse-func expr))))
 
 (defn parse-body 
   "Parse a function body"
   [& exprs] 
   (reduce str 
     (map to-expr exprs)))
+
+(defn parse-file
+  "Parse a cljp file"
+  [path]
+  (let [exprs (format "'(%s)" (slurp path))]
+    (apply parse-body (load-string exprs))))
 
 (defn -main [& args])
 

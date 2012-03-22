@@ -38,6 +38,7 @@
   [arg]
   (let [s (str arg)]
     (cond (list? arg) (parse-func arg)
+          (string? arg) (str "\"" arg "\"")
           (re-matches #"\d+" s) s
           :else (str "$" s))))
 

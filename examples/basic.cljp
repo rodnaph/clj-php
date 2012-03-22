@@ -4,5 +4,6 @@
 (defn double [x]
     (* 2 x))
 
+(println "Double 2 is...")
 (println (double 2))
 

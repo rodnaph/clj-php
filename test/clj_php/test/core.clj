@@ -37,3 +37,6 @@
 (facts "about function names"
   (parse-func-name "*") => "\\clojure\\core\\multiply")
 
+(facts "about literal strings"
+  (parse-func '(foo "hello")) => "foo(\"hello\")")
+

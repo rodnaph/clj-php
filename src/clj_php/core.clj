@@ -4,6 +4,9 @@
 
 (def clojure-core-functions {
   "*" "multiply"
+  "/" "divide"
+  "+" "add"
+  "-" "subtract"
   "println" "println"
 })
 

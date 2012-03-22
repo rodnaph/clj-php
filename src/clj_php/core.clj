@@ -1,6 +1,12 @@
 
 (ns clj-php.core)
 
+(defn parse-ns
+  "Parse a namespace declaration"
+  [[_ ns-name]]
+  (format "namespace %s;"
+          (.replace (str ns-name) "." "\\")))
+
 (defn parse-args
   "Parse args into argument string"
   [args]
@@ -8,6 +14,13 @@
     (if (> (count arg-str) 2)
         (subs arg-str 2)
         arg-str)))
+
+(defn parse-def
+  "Parse a definition"
+  [[_ def-name value]]
+  (format "$%s = \"%s\";"
+          def-name
+          value))
 
 (defn to-func-arg
   "Transform function argument (number or scalar)"
@@ -25,14 +38,20 @@
 (defn parse-func 
   "Parse a function call"
   [[func-name & args]]
-  (format "%s(%s)"
+  (format "%s(%s);"
           func-name
           (parse-func-args args)))
 
+(defn to-expr
+  "Parses an expression"
+  [expr]
+  "")
+
 (defn parse-body 
   "Parse a function body"
-  [& args] 
-  "")
+  [& exprs] 
+  (reduce str 
+    (map to-expr exprs)))
 
 (defn parse-defn-args 
   "Parse an argument list"

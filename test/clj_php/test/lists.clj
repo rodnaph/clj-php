@@ -4,5 +4,5 @@
         midje.sweet))
 
 (facts "about lists"
-  (parse-list '(a b c)) => "array($a, $b, $c)")
+  (parse-list '(a b c)) => "new \\clojure\\core\\List($a, $b, $c)")
 

@@ -10,7 +10,7 @@
     (apply parse-body (load-string exprs))))
 
 (defn php-includes []
-  (slurp "php/clojure/core.php"))
+  "<?php include 'php/clojure/core.php';")
 
 (defn -main [& args]
   (let [path (first args)]

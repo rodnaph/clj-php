@@ -38,3 +38,8 @@ lein midje
 phpunit test/php
 ```
 
+### Disclaimer
+
+This is not meant to ever be an actually useful thing, compiling Clojure to PHP is insane.  It's just
+a learning tool for me to get more familiar with Clojure.
+

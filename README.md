@@ -31,9 +31,10 @@ Double 2 is... 4
 
 ## Tests
 
-Tests written with Midje, run them with...
+Tests written with Midje and PHPUnit, run them with...
 
 ```bash
 lein midje
+phpunit tests/php
 ```
 

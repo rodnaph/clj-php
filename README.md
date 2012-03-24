@@ -35,6 +35,6 @@ Tests written with Midje and PHPUnit, run them with...
 
 ```bash
 lein midje
-phpunit tests/php
+phpunit test/php
 ```
 

@@ -79,6 +79,6 @@ function str() {
  *
  */
 function println() {
-    echo apply( str, func_get_args() ) . "\n"; 
+    echo apply( core::$str, func_get_args() ) . "\n"; 
 }
 

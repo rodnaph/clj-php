@@ -9,6 +9,7 @@
   "+" "add"
   "-" "subtract"
   "println" "println"
+  "str" "str"
 })
 
 (defn parse-args

@@ -4,8 +4,8 @@
         midje.sweet))
 
 (facts "about defns"
-  (parse-defn '(defn foo [])) => "function foo() {return null;}"
-  (parse-defn '(defn foo [a b])) => "function foo($a, $b) {return null;}")
+  (parse-defn '(defn foo [])) => "$foo = function() {return null;};"
+  (parse-defn '(defn foo [a b])) => "$foo = function($a, $b) {return null;};")
 
 (facts "about defn arguments"
   (parse-defn-args '[a]) => "$a"
@@ -23,7 +23,7 @@
   (parse-ns '(ns foo.bar)) => "namespace foo\\bar;")
 
 (facts "about parsing expression bodies"
-  (parse-body '(def x 1) '(defn foo [x])) => "$x = 1;function foo($x) {return null;}"
+  (parse-body '(def x 1) '(defn foo [x])) => "$x = 1;$foo = function($x) {return null;};"
   (parse-body '(def x 1) '(def y 2)) => "$x = 1;$y = 2;")
 
 (facts "about let bindings"

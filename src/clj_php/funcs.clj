@@ -8,6 +8,8 @@
   "-" "subtract"
   "println" "println"
   "str" "str"
+  "map" "map"
+  "first" "first"
 })
 
 (defn parse-func-name

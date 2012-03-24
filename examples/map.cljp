@@ -1,0 +1,12 @@
+
+(ns examples.map)
+
+(def x [1 2 3 4 5])
+
+(defn double [x] (* x 2))
+
+(def doubled (map double [1 2 3]))
+
+(println "Doubled: "
+         (first doubled))
+

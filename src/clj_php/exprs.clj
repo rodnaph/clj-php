@@ -31,7 +31,7 @@
   "Parse a function definition"
   [[_ func-name args & body]]
   (let [body-str (apply parse-body body)]
-    (format "function %s(%s) {return %s}"
+    (format "$%s = function(%s) {return %s};"
             func-name
             (parse-defn-args args)
             (if (> (count body-str) 0)

@@ -74,6 +74,14 @@ function str() {
     return apply( core::$str, func_get_args() );
 }
 
+function map( $func, Seq $seq ) {
+    return new LazySeq( $func, $seq );
+}
+
+function first( Seq $seq ) {
+    return $seq->first();
+}
+
 /**
  * Print a list of variables to stdout
  *

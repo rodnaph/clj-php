@@ -3,7 +3,7 @@
 namespace clojure\core;
 
 class core {
-    public static $add, $multiply, $divide, $subtract;
+    public static $add, $multiply, $divide, $subtract, $str;
 }
 
 core::$add = function() {
@@ -42,6 +42,14 @@ core::$subtract = function() {
     );
 };
 
+core::$str = function() {
+    return array_reduce(
+        func_get_args(),
+        function( $acc, $e ) { return $acc . $e; },
+        ""
+    );
+};
+
 function apply( $func, $args ) {
     return call_user_func_array( $func, $args );
 }
@@ -60,6 +68,10 @@ function divide() {
 
 function subtract() {
     return apply( core::$subtract, func_get_args() );
+}
+
+function str() {
+    return apply( core::$str, func_get_args() );
 }
 
 /**

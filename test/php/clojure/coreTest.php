@@ -20,5 +20,9 @@ class coreTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals( 3, subtract(20,9,5,3) );
     }
 
+    public function testStrConcatenatesAllArgumentsToString() {
+        $this->assertEquals( "foo 1 bar", str("foo ", 1, " bar") );
+    }
+
 }
 

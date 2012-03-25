@@ -11,12 +11,25 @@ interface ISeq {
      */
     public function first();
 
+    /**
+     * Returns a new sequence containing all but the first item
+     * in the sequence, or null if there are no more items.
+     *
+     * @return ISeq
+     */
     public function nxt();
 
+    /**
+     * Returns a new sequence (possibly empty) containing all but
+     * the first item in this sequence.
+     *
+     * @return ISeq
+     */
     public function more();
 
     /**
-     * Puts the item at the start of this sequence, ie. becomes the next first()
+     * Returns a new sequence containing all the items in this sequence,
+     * and the new item prepended.
      *
      * @param mixed $item
      */

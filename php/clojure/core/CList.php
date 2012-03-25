@@ -2,5 +2,5 @@
 
 namespace clojure\core;
 
-class CList extends Cons {}
+class CList extends ASeq {}
 

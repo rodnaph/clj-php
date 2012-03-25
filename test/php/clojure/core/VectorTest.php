@@ -26,5 +26,29 @@ class VectorTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals( 0, $vector->first() );
     }
 
+    public function testNxtReturnsANewSequenceWithAllButFirstItem() {
+        $vector = $this->vector->nxt();
+        $this->assertInstanceOf( '\clojure\core\Vector', $vector );
+        $this->assertEquals( 2, $vector->count() );
+    }
+
+    public function testNxtReturnsNullWhenNoMoreItems() {
+        $vector = new Vector();
+        $this->assertNull( $vector->nxt() );
+    }
+
+    public function testMoreReturnsNewVectorWithAllButFirstItem() {
+        $vector = $this->vector->more();
+        $this->assertInstanceOf( '\clojure\core\Vector', $vector );
+        $this->assertEquals( 2, $vector->count() );
+    }
+
+    public function testMoreReturnsEmptyVectorWhenNoItems() {
+        $vector = new Vector();
+        $more = $vector->more();
+        $this->assertInstanceOf( '\clojure\core\Vector', $more );
+        $this->assertEquals( 0, $more->count() );
+    }
+
 }
 

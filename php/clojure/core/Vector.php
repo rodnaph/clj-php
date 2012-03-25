@@ -2,5 +2,5 @@
 
 namespace clojure\core;
 
-class Vector extends Seq {}
+class Vector extends Cons {}
 

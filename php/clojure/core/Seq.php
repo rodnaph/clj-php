@@ -2,7 +2,7 @@
 
 namespace clojure\core;
 
-abstract class Seq implements \ArrayAccess {
+abstract class Seq implements \ArrayAccess, ISeq {
 
     /**
      * @param array
@@ -69,6 +69,8 @@ abstract class Seq implements \ArrayAccess {
     public function offsetUnset( $offset ) {
         unset( $this->items[$offset] );
     }
+
+    public function cons( $item ) {}
 
 }
 

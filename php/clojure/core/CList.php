@@ -2,5 +2,5 @@
 
 namespace clojure\core;
 
-class CList extends Seq {}
+class CList extends Cons {}
 

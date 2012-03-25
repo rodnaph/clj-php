@@ -24,14 +24,14 @@ class coreTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals( "foo 1 bar", str("foo ", 1, " bar") );
     }
 
-    public function testMapCanApplyAFunctionToASequence() {
-        $seq = new Vector( 1, 2, 3 );
-        $dbl = function( $x ) { return $x * 2; };
-        $res = map( $dbl, $seq );
-        $this->assertEquals( 2, $res[0] );
-        $this->assertEquals( 4, $res[1] );
-        $this->assertEquals( 6, $res[2] );
-    }
+//    public function testMapCanApplyAFunctionToASequence() {
+//        $seq = new Vector( 1, 2, 3 );
+//        $dbl = function( $x ) { return $x * 2; };
+//        $res = map( $dbl, $seq );
+//        $this->assertEquals( 2, $res[0] );
+//        $this->assertEquals( 4, $res[1] );
+//        $this->assertEquals( 6, $res[2] );
+//    }
 
 }
 

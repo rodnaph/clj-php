@@ -37,7 +37,7 @@ class LazySeq implements ISeq, \Countable {
             while ( is_subclass_of($ls,'\clojure\core\LazySeq') ) {
                 $ls = $ls->sequenceValue();
             }
-            $this->sequence = \clojure\core\seq( $ls );
+            $this->sequence = \clojure\core::seq( $ls );
         }
         return $this->sequence;
     }

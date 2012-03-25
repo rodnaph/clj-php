@@ -1,32 +1,34 @@
 <?php
 
-namespace clojure\core;
+namespace clojure;
+
+require_once 'php/bootstrap.php';
 
 class coreTest extends \PHPUnit_Framework_TestCase {
 
     public function testAddingSomeNumbers() {
-        $this->assertEquals( 10, add(1,4,3,2) );
+        $this->assertEquals( 10, \clojure\core::add(1,4,3,2) );
     }
 
     public function testMultiplyingSomeNumbers() {
-        $this->assertEquals( 24, multiply(2,2,3,2) );
+        $this->assertEquals( 24, \clojure\core::multiply(2,2,3,2) );
     }
 
     public function testDividingNumbers() {
-        $this->assertEquals( 10, divide(100,2,5) );
+        $this->assertEquals( 10, \clojure\core::divide(100,2,5) );
     }
 
     public function testSubtractingSomeNumbers() {
-        $this->assertEquals( 3, subtract(20,9,5,3) );
+        $this->assertEquals( 3, \clojure\core::subtract(20,9,5,3) );
     }
 
     public function testStrConcatenatesAllArgumentsToString() {
-        $this->assertEquals( "foo 1 bar", str("foo ", 1, " bar") );
+        $this->assertEquals( "foo 1 bar", \clojure\core::str("foo ", 1, " bar") );
     }
 
     public function testASeqReturnedAsIsFromSeq() {
-        $seq = new Cons();
-        $this->assertSame( $seq, seq($seq) );
+        $seq = new \clojure\core\Cons();
+        $this->assertSame( $seq, \clojure\core::seq($seq) );
     }
 
 //    public function testMapCanApplyAFunctionToASequence() {

@@ -27,10 +27,10 @@
   (parse-body '(def x 1) '(def y 2)) => "$x = 1;$y = 2;")
 
 (facts "about let bindings"
-  (parse-let '(let [x 1 y 2] (* x y))) => "$x = 1;$y = 2;\\clojure\\core\\multiply($x, $y);"
+  (parse-let '(let [x 1 y 2] (* x y))) => "$x = 1;$y = 2;\\clojure\\core::multiply($x, $y);"
   (parse-let '(let [x 1])) => "$x = 1;")
 
 (facts "about string literals"
-  (parse-expr '(foo "bar")) => "foo(\"bar\");"
+  (parse-expr '(foo "bar")) => "$foo(\"bar\");"
   (parse-expr "foo bar") => "\"foo bar\"")
 

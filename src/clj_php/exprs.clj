@@ -93,7 +93,7 @@
         (vector? expr) (parse-vector expr)
         (string? expr) (str "\"" expr "\"")
         (re-matches #"\d+" (str expr)) expr
-        :else (str "$" expr)))
+        :else (parse-func-arg expr))) ; check for ref required? ie. \clojure\core::$add, not $add
 
 (defn parse-body 
   "Parse a function body"

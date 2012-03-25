@@ -1,9 +1,14 @@
 <?php
 
-namespace clojure\core;
+namespace clojure;
 
 class core {
-    public static $add, $multiply, $divide, $subtract, $str;
+    public static $add, $multiply, $divide, $subtract, $str, $seq, $apply,
+                  $map, $first, $println;
+    public static function __callStatic( $name, $args ) {
+        $func = core::$$name;
+        return call_user_func_array( $func, $args );
+    }
 }
 
 core::$add = function() {
@@ -50,39 +55,7 @@ core::$str = function() {
     );
 };
 
-function apply( $func, $args ) {
-    return call_user_func_array( $func, $args );
-}
-
-function add() {
-    return apply( core::$add, func_get_args() );
-}
-
-function multiply() {
-    return apply( core::$multiply, func_get_args() );
-}
-
-function divide() {
-    return apply( core::$divide, func_get_args() );
-}
-
-function subtract() {
-    return apply( core::$subtract, func_get_args() );
-}
-
-function str() {
-    return apply( core::$str, func_get_args() );
-}
-
-function map( $func, Seq $seq ) {
-    return new LazySeq( $func, $seq );
-}
-
-function first( Seq $seq ) {
-    return $seq->first();
-}
-
-function seq( $obj ) {
+core::$seq = function( $obj ) {
     if ( is_subclass_of($obj,'\clojure\core\ASeq') ) {
         return $obj;
     }
@@ -90,7 +63,18 @@ function seq( $obj ) {
         return $obj->seq();
     }
     return seqFrom( $obj );
-}
+};
+
+core::$apply = function( $func, $args ) {
+    return call_user_func_array( $func, $args );
+};
+
+core::$map = function( $func, Seq $seq ) {
+};
+
+core::$first = function( Seq $seq ) {
+    return $seq->first();
+};
 
 function _seqFrom( $obj ) {
     throw new Exception( 'Cant create sequence from object: ' . $obj );
@@ -100,7 +84,7 @@ function _seqFrom( $obj ) {
  * Print a list of variables to stdout
  *
  */
-function println() {
-    echo apply( core::$str, func_get_args() ) . "\n"; 
-}
+core::$println = function() {
+    echo core::apply( core::$str, func_get_args() ) . "\n"; 
+};
 

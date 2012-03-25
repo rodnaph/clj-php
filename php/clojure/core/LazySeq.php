@@ -2,56 +2,70 @@
 
 namespace clojure\core;
 
-class LazySeq extends Seq {
+class LazySeq implements ISeq, \Countable {
 
-    /**
-     * Function to apply when realising items
-     */
-    private $func;
+    private $fn;
 
-    /**
-     * Index of currently realised item
-     */
-    private $index;
+    private $sv;
 
-    /**
-     * Create a lazy sequence with a function to realise items, and
-     * a number of items.
-     *
-     * @param Callable $func
-     * @param array $items
-     */
-    public function __construct( $func, $items ) {
-        $this->items = $items;
-        $this->func = $func;
-        $this->index = -1;
+    private $sequence;
+
+    public function __construct( $fn ) {
+        $this->fn = $fn;
+    }
+
+    protected function sequenceValue() {
+        if ( $this->fn ) {
+            $fn = $this->fn;
+            $this->sv = $fn();
+            $this->fn = null;
+        }
+        if ( $this->sv ) {
+            return $this->sv;
+        }
+        return $this->sequence;
     }
 
     /**
-     * When accessing items check they have been realised
+     * Realises this lazy sequence
      *
-     * @param integer $n
+     */
+    protected function seq() {
+        $this->sequenceValue();
+        if ( $this->sv ) {
+            $ls = $this->sv;
+            while ( is_subclass_of($ls,'\clojure\core\LazySeq') ) {
+                $ls = $ls->sequenceValue();
+            }
+            $this->sequence = \clojure\core\seq( $ls );
+        }
+        return $this->sequence;
+    }
+
+    /**
+     * Returns the first item in the sequence, as ISeq
      *
      * @return mixed
      */
-    protected function nth( $n ) {
-        if ( $n > $this->index ) {
-            $this->realiseTo( $n );
-        }
-        return parent::nth( $n );
+    public function first() {
+        $this->seq();
+        return $this->sequence
+            ? $this->sequence->first()
+            : null;
     }
 
-    /**
-     * Realises items from current index to new index
-     *
-     * @param integer $n
-     */
-    public function realiseTo( $n ) {
-        $func = $this->func;
-        while ( $this->index++ <= $n ) {
-            $this[ $this->index ] = $func( $this[$this->index] );
-        }
-        $this->index--;
+    public function nxt() {
+    }
+
+    public function more() {}
+
+    public function cons( $item ) {}
+
+    public function count() {
+        $this->seq();
+        return $this->sequence
+            ? $this->sequence->count()
+            : 0;
     }
 
 }

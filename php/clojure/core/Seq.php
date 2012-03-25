@@ -71,6 +71,9 @@ abstract class Seq implements \ArrayAccess, ISeq {
     }
 
     public function cons( $item ) {}
+    public function nxt() {}
+    public function more() {}
+
 
 }
 

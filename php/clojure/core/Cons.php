@@ -54,5 +54,9 @@ class Cons extends ASeq {
             : 0;
     }
 
+    public function nxt() {}
+
+    public function more() {}
+
 }
 

@@ -27,11 +27,5 @@ class SeqTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals( 3, $this->seq->count() );
     }
 
-    public function testRestContainsAnotherSequenceWithAllButFirstItem() {
-        $rest = $this->seq->rest();
-        $this->assertInstanceOf( '\clojure\core\Seq', $rest );
-        $this->assertEquals( 2, $rest->count() );
-    }
-
 }
 

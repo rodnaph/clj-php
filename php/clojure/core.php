@@ -82,6 +82,20 @@ function first( Seq $seq ) {
     return $seq->first();
 }
 
+function seq( $obj ) {
+    if ( is_subclass_of($obj,'\clojure\core\ASeq') ) {
+        return $obj;
+    }
+    if ( is_subclass_of($obj,'\clojure\core\LazySeq') ) {
+        return $obj->seq();
+    }
+    return seqFrom( $obj );
+}
+
+function _seqFrom( $obj ) {
+    throw new Exception( 'Cant create sequence from object: ' . $obj );
+}
+
 /**
  * Print a list of variables to stdout
  *

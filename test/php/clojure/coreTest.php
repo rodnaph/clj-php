@@ -24,6 +24,11 @@ class coreTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals( "foo 1 bar", str("foo ", 1, " bar") );
     }
 
+    public function testASeqReturnedAsIsFromSeq() {
+        $seq = new Cons();
+        $this->assertSame( $seq, seq($seq) );
+    }
+
 //    public function testMapCanApplyAFunctionToASequence() {
 //        $seq = new Vector( 1, 2, 3 );
 //        $dbl = function( $x ) { return $x * 2; };

@@ -2,9 +2,12 @@
 
 namespace clojure;
 
+use clojure\core\ISeq;
+
 class core {
+    // @todo find way to remove the need for this
     public static $add, $multiply, $divide, $subtract, $str, $seq, $apply,
-                  $map, $first, $println;
+                  $map, $first, $println, $cons;
     public static function __callStatic( $name, $args ) {
         $func = core::$$name;
         return call_user_func_array( $func, $args );
@@ -69,22 +72,21 @@ core::$apply = function( $func, $args ) {
     return call_user_func_array( $func, $args );
 };
 
-core::$map = function( $func, Seq $seq ) {
-};
-
-core::$first = function( Seq $seq ) {
+core::$first = function( ISeq $seq ) {
     return $seq->first();
 };
+
+core::$println = function() {
+    echo core::apply( core::$str, func_get_args() ) . "\n"; 
+};
+
+core::$cons = function( $item, ISeq $seq ) {
+    return $seq->cons( $item );
+};
+
+////////////// internal /////////////////
 
 function _seqFrom( $obj ) {
     throw new Exception( 'Cant create sequence from object: ' . $obj );
 }
-
-/**
- * Print a list of variables to stdout
- *
- */
-core::$println = function() {
-    echo core::apply( core::$str, func_get_args() ) . "\n"; 
-};
 

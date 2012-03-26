@@ -11,5 +11,5 @@
 
 (facts "about functions as arguments"
   (parse-func-arg "foo") => "$foo"
-  (parse-func-arg "+") => "\\clojure\\core::$add")
+  (parse-func-arg "+") => "\\clojure\\core::$fn->add")
 

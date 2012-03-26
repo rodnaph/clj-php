@@ -21,6 +21,7 @@
 
 (facts "about namespaces"
   (parse-ns '(ns foo.bar)) => "namespace foo\\bar;")
+  ;(parse-ns '(ns foo.bar)) => "namespace foo;class bar extends \\clojure\\core { public static $fn; }bar::$fn = new \\clojure\\core\\FMap();")
 
 (facts "about parsing expression bodies"
   (parse-body '(def x 1) '(defn foo [x])) => "$x = 1;$foo = function($x) {return null;};"

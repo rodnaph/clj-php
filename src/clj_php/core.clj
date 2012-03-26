@@ -10,7 +10,7 @@
     (apply parse-body (load-string exprs))))
 
 (defn php-includes []
-  "<?php namespace clojure\\core;include 'php/clojure/core.php';")
+  "<?php namespace clojure\\core;include 'php/bootstrap.php';")
 
 (defn -main [& args]
   (let [path (first args)]

@@ -35,5 +35,5 @@
 (defn parse-func-arg
   "Resolves function names as arguments"
   [func-name]
-  (parse-name func-name "\\clojure\\core::$%s"))
+  (parse-name func-name "\\clojure\\core::$fn->%s"))
 

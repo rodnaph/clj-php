@@ -19,10 +19,6 @@
   (parse-vector '[[1 2] [3 4]]) => "new \\clojure\\core\\Vector(new \\clojure\\core\\Vector(1, 2), new \\clojure\\core\\Vector(3, 4))"
   (parse-vector '[1 2 3]) => "new \\clojure\\core\\Vector(1, 2, 3)")
 
-(facts "about namespaces"
-  (parse-ns '(ns foo.bar)) => "namespace foo\\bar;")
-  ;(parse-ns '(ns foo.bar)) => "namespace foo;class bar extends \\clojure\\core { public static $fn; }bar::$fn = new \\clojure\\core\\FMap();")
-
 (facts "about parsing expression bodies"
   (parse-body '(def x 1) '(defn foo [x])) => "$x = 1;$foo = function($x) {return null;};"
   (parse-body '(def x 1) '(def y 2)) => "$x = 1;$y = 2;")

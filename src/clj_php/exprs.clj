@@ -1,6 +1,7 @@
 
 (ns clj-php.exprs
-  (:use clj-php.funcs))
+  (:use clj-php.funcs
+        clj-php.ns))
 
 (def ^:dynamic *is-statement* true)
 
@@ -37,12 +38,6 @@
             (if (> (count body-str) 0)
                 body-str 
                 "null;"))))
-
-(defn parse-ns
-  "Parse a namespace declaration"
-  [[_ ns-name]]
-  (format "namespace %s;"
-          (.replace (str ns-name) "." "\\")))
 
 (defn parse-let
   "Parse a let binding"

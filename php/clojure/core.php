@@ -72,12 +72,8 @@ core::$fn->str = function() {
 };
 
 core::$fn->seq = function( $obj ) {
-    if ( is_subclass_of($obj,'\clojure\core\ASeq') ) {
-        return $obj;
-    }
-    if ( is_subclass_of($obj,'\clojure\core\LazySeq') ) {
-        return $obj->seq();
-    }
+    if ( is_subclass_of($obj,'\clojure\core\ASeq') ) { return $obj; }
+    if ( is_subclass_of($obj,'\clojure\core\LazySeq') ) { return $obj->seq(); }
     return seqFrom( $obj );
 };
 
@@ -98,10 +94,13 @@ core::$fn->cons = function( $item, ISeq $seq ) {
 };
 
 core::$fn->map = function( $func, ISeq $seq ) {
-    return _seqFor(
-        array_map( $func, $seq->toArray() ),
-        $seq
-    );
+    $first = $seq->first();
+    return ( $first != null )
+        ? new core\Cons(
+             $func( $first ),
+             core::map( $func, $seq->more() )
+          )
+        : null;
 };
 
 ////////////// internal /////////////////

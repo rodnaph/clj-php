@@ -3,9 +3,16 @@
   (:use clj-php.funcs
         clj-php.ns))
 
+(def format-def "ns::$def->%s = %s;")
+(def format-defn "ns::$def->%s = function(%s) {return %s};")
+(def format-func "%s(%s)")
+(def format-vector "new \\clojure\\core\\Vector(%s)")
+
 (def ^:dynamic *is-statement* true)
 
-(declare parse-body parse-expr)
+(declare parse-file parse-body parse-expr)
+
+; Arguments
 
 (defn parse-args
   "Parse args into argument string"
@@ -15,29 +22,40 @@
         (subs arg-str 2)
         arg-str)))
 
-(defn parse-def
-  "Parse a definition"
-  [[_ def-name value]]
-  (format "$%s = %s;"
-          def-name
-          (parse-expr value)))
-
 (defn parse-defn-args 
   "Parse an argument list"
   [args]
   (parse-args
     (map (partial str "$") args)))
 
+(defn parse-func-names
+  "Parse arguments to a function call"
+  [args]
+  (parse-args 
+    (map parse-expr args)))
+
+; Definitions
+
+(defn parse-def
+  "Parse a definition"
+  [[_ def-name value]]
+  (format format-def
+          def-name
+          (parse-expr value)))
+
 (defn parse-defn 
   "Parse a function definition"
   [[_ func-name args & body]]
-  (let [body-str (apply parse-body body)]
-    (format "$%s = function(%s) {return %s};"
-            func-name
-            (parse-defn-args args)
-            (if (> (count body-str) 0)
-                body-str 
-                "null;"))))
+  (with-local-args args
+    (let [body-str (apply parse-body body)]
+      (format format-defn
+              func-name
+              (parse-defn-args args)
+              (if (> (count body-str) 0)
+                  body-str 
+                  "null;")))))
+
+; Bindings
 
 (defn parse-let
   "Parse a let binding"
@@ -49,19 +67,26 @@
                   (map parse-expr body))]
     (str def-str body-str)))
 
-(defn parse-func-args
-  "Parse arguments to a function call"
-  [args]
-  (parse-args 
-    (map parse-expr args)))
+; Functions
 
 (defn parse-func 
   "Parse a function call"
   [[func-name & args]]
   (binding [*is-statement* false]
-    (format "%s(%s)"
+    (format format-func
             (parse-func-name func-name)
-            (parse-func-args args))))
+            (parse-func-names args))))
+
+; Namespaces
+
+(defn parse-ns
+  "Parse a namespace declaration"
+  [[_ ns-decl & body]]
+  (str (parse-ns-includes parse-file body)
+       (parse-ns-decl ns-decl)
+       (parse-ns-body body)))
+
+; Data structures
 
 (defn parse-list
   "Parse a list"
@@ -78,8 +103,10 @@
   "Parses a vector"
   [expr]
   (binding [*is-statement* false]
-    (format "new \\clojure\\core\\Vector(%s)"
+    (format format-vector
             (parse-args (map parse-expr expr)))))
+
+; Expressions
 
 (defn parse-expr
   "Parses an expression"
@@ -88,11 +115,17 @@
         (vector? expr) (parse-vector expr)
         (string? expr) (str "\"" expr "\"")
         (re-matches #"\d+" (str expr)) expr
-        :else (parse-func-arg expr))) ; check for ref required? ie. \clojure\core::$add, not $add
+        :else (parse-func-name expr))) ; check for ref required? ie. \clojure\core::$add, not $add
 
 (defn parse-body 
   "Parse a function body"
   [& exprs] 
   (reduce str 
     (map parse-expr exprs)))
+
+(defn parse-file
+  "Parse a cljp file, if it hasn't already been"
+  [path]
+  (let [exprs (format "'(%s)" (slurp path))]
+    (apply parse-body (load-string exprs))))
 

@@ -4,6 +4,9 @@
         midje.sweet))
 
 (facts "about namespaces"
-  (parse-ns '(ns foo.bar)) => "namespace foo\\bar;")
-  ;(parse-ns '(ns foo.bar)) => "namespace foo;class bar extends \\clojure\\core { public static $fn; }bar::$fn = new \\clojure\\core\\FMap();")
+  (parse-ns-decl 'foo.bar) => "namespace foo\\bar;class ns extends \\clojure\\core {public static $def;}ns::$def = new \\clojure\\core\\DefMap();")
+
+(facts "about namespace file system paths"
+  (path-not-included? "foo/wumba.cljp") => true
+  (ns-to-fs 'foo.bar) => "foo/bar.cljp")
 

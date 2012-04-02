@@ -1,6 +1,10 @@
 
 (ns clj-php.funcs)
 
+(def ^:dynamic *local-args* [])
+
+(def format-call "\\clojure\\core::$def->%s")
+
 (def func-map {
   "*" "multiply"
   "/" "divide"
@@ -20,20 +24,28 @@
       (str func-name)
       new-name)))
 
+(defn- in?
+  [needle haystack]
+  (some #{needle} haystack))
+
 (defn- parse-name
-  [func-name name-format]
+  [func-name]
   (let [str-name (resolve-name func-name)]
-    (if (some #{str-name} core-funcs)
-        (format name-format str-name)
-        (str "$" str-name))))
+    (cond (in? str-name core-funcs) 
+            (format format-call str-name)
+          (in? str-name *local-args*)
+            (str "$" str-name)
+          :else 
+            (str "ns::$def->" str-name))))
+
+; Public
 
 (defn parse-func-name
   "Resolves clojure names to php functions"
   [func-name]
-  (parse-name func-name "\\clojure\\core::%s"))
+  (parse-name func-name))
 
-(defn parse-func-arg
-  "Resolves function names as arguments"
-  [func-name]
-  (parse-name func-name "\\clojure\\core::$fn->%s"))
+(defmacro with-local-args [args & body]
+  `(binding [*local-args* (map str ~args)]
+     (do ~@body)))
 

@@ -2,32 +2,21 @@
 
 namespace clojure\core;
 
-class FMap {
-    private static $fn = array();
-    public function __get( $name ) {
-        return static::$fn[ $name ];
-    }
-    public function __set( $name, $value ) {
-        static::$fn[ $name ] = $value;
-    }
-    public static function __callStatic( $name, $args ) {
-        return call_user_func_array(
-            static::$fn->$name,
-            $args
-        );
-    }
+class Base {
+    private static $def;
 }
 
 namespace clojure;
 
 use clojure\core\ISeq;
-use clojure\core\FMap;
+use clojure\core\Base;
+use clojure\core\DefMap;
 
-class core extends FMap { public static $fn; }
+class core extends Base { public static $def; }
 
-core::$fn = new \clojure\core\FMap();
+core::$def = new DefMap();
 
-core::$fn->add = function() {
+core::$def->add = function() {
     return array_reduce(
         func_get_args(),
         function( $x, $y ) { return $x + $y; },
@@ -35,7 +24,7 @@ core::$fn->add = function() {
     );
 };
 
-core::$fn->multiply = function() {
+core::$def->multiply = function() {
     return array_reduce(
         func_get_args(),
         function( $x, $y ) { return $x * $y; },
@@ -43,7 +32,7 @@ core::$fn->multiply = function() {
     );
 };
 
-core::$fn->divide = function() {
+core::$def->divide = function() {
     $rest = func_get_args();
     $first = \array_shift( $rest );
     return array_reduce(
@@ -53,7 +42,7 @@ core::$fn->divide = function() {
     );
 };
 
-core::$fn->subtract = function() {
+core::$def->subtract = function() {
     $rest = func_get_args();
     $first = \array_shift( $rest );
     return array_reduce(
@@ -63,7 +52,7 @@ core::$fn->subtract = function() {
     );
 };
 
-core::$fn->str = function() {
+core::$def->str = function() {
     return array_reduce(
         func_get_args(),
         function( $acc, $e ) { return $acc . $e; },
@@ -71,34 +60,34 @@ core::$fn->str = function() {
     );
 };
 
-core::$fn->seq = function( $obj ) {
+core::$def->seq = function( $obj ) {
     if ( is_subclass_of($obj,'\clojure\core\ASeq') ) { return $obj; }
     if ( is_subclass_of($obj,'\clojure\core\LazySeq') ) { return $obj->seq(); }
     return seqFrom( $obj );
 };
 
-core::$fn->apply = function( $func, $args ) {
+core::$def->apply = function( $func, $args ) {
     return call_user_func_array( $func, $args );
 };
 
-core::$fn->first = function( ISeq $seq ) {
+core::$def->first = function( ISeq $seq ) {
     return $seq->first();
 };
 
-core::$fn->println = function() {
-    echo core::apply( core::$fn->str, func_get_args() ) . "\n"; 
+core::$def->println = function() {
+    echo core::$def->apply( core::$def->str, func_get_args() ) . "\n"; 
 };
 
-core::$fn->cons = function( $item, ISeq $seq ) {
+core::$def->cons = function( $item, ISeq $seq ) {
     return $seq->cons( $item );
 };
 
-core::$fn->map = function( $func, ISeq $seq ) {
+core::$def->map = function( $func, ISeq $seq ) {
     $first = $seq->first();
     return ( $first != null )
         ? new core\Cons(
              $func( $first ),
-             core::map( $func, $seq->more() )
+             core::$def->map( $func, $seq->more() )
           )
         : null;
 };

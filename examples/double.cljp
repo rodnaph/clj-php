@@ -1,0 +1,6 @@
+
+(ns examples.double)
+
+(defn double [x]
+    (* 2 x))
+

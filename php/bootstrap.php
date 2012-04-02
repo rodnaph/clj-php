@@ -1,5 +1,6 @@
 <?php
 
+include __DIR__ . '/clojure/core/DefMap.php';
 include __DIR__ . '/clojure/core.php';
 include __DIR__ . '/clojure/core/ISeq.php';
 include __DIR__ . '/clojure/core/ASeq.php';

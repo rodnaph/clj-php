@@ -1,6 +1,6 @@
 <?php
 
-namespace clojure\core;
+namespace clojure\lang;
 
 class Cons extends ASeq {
 

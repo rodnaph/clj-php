@@ -1,12 +1,13 @@
 <?php
 
-include __DIR__ . '/clojure/core/DefMap.php';
-include __DIR__ . '/clojure/core.php';
-include __DIR__ . '/clojure/core/ISeq.php';
-include __DIR__ . '/clojure/core/ASeq.php';
-include __DIR__ . '/clojure/core/Cons.php';
-include __DIR__ . '/clojure/core/Seq.php';
-include __DIR__ . '/clojure/core/LazySeq.php';
-include __DIR__ . '/clojure/core/Vector.php';
-include __DIR__ . '/clojure/core/CList.php';
+include __DIR__ . '/clojure/lang/Base.php';
+include __DIR__ . '/clojure/lang/DefMap.php';
+include __DIR__ . '/clojure/lang.php';
+include __DIR__ . '/clojure/lang/ISeq.php';
+include __DIR__ . '/clojure/lang/ASeq.php';
+include __DIR__ . '/clojure/lang/Cons.php';
+include __DIR__ . '/clojure/lang/Seq.php';
+include __DIR__ . '/clojure/lang/LazySeq.php';
+include __DIR__ . '/clojure/lang/Vector.php';
+include __DIR__ . '/clojure/lang/CList.php';
 

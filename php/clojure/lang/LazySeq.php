@@ -1,6 +1,6 @@
 <?php
 
-namespace clojure\core;
+namespace clojure\lang;
 
 class LazySeq implements ISeq, \Countable {
 
@@ -34,10 +34,10 @@ class LazySeq implements ISeq, \Countable {
         $this->sequenceValue();
         if ( $this->sv ) {
             $ls = $this->sv;
-            while ( is_subclass_of($ls,'\clojure\core\LazySeq') ) {
+            while ( is_subclass_of($ls,'\clojure\lang\LazySeq') ) {
                 $ls = $ls->sequenceValue();
             }
-            $this->sequence = \clojure\core::seq( $ls );
+            //$this->sequence = \clojure\lang::seq( $ls );
         }
         return $this->sequence;
     }

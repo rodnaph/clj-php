@@ -3,10 +3,11 @@
   (:require [clojure.string :as str]))
 
 (def decl-format (str "namespace %s;"
-                    "class ns extends \\clojure\\core {"
+                    "class ns extends \\clojure\\lang {"
                         "public static $def;"
                     "}"
-                    "ns::$def = new \\clojure\\core\\DefMap();"))
+                    "ns::$def = new \\clojure\\lang\\DefMap();"
+                    "ns::$def->__use(\\clojure\\core\\ns::$def);"))
 (def format-use "ns::$def->__use(\\%s\\ns::$def);")
 
 (def ^:dynamic *includes* (ref []))

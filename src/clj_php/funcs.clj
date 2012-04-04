@@ -3,7 +3,8 @@
 
 (def ^:dynamic *local-args* [])
 
-(def format-call "\\clojure\\core::$def->%s")
+(def format-local "$%s")
+(def format-ns-def "ns::$def->%s")
 
 (def func-map {
   "*" "multiply"
@@ -12,12 +13,8 @@
   "-" "subtract"
 })
 
-(def core-funcs (concat (vals func-map) [
-  "println" "str" "map" "first"
-]))
-
 (defn- resolve-name
-  "Switches certain core function names"
+  "Switches certain lang function names"
   [func-name]
   (let [new-name (get func-map (str func-name))]
     (if (nil? new-name)
@@ -25,18 +22,18 @@
       new-name)))
 
 (defn- in?
+  "Indicates of the needle is in the haystack"
   [needle haystack]
   (some #{needle} haystack))
 
 (defn- parse-name
+  "Parse a name to either a mapped function, local var, of namespace def"
   [func-name]
   (let [str-name (resolve-name func-name)]
-    (cond (in? str-name core-funcs) 
-            (format format-call str-name)
-          (in? str-name *local-args*)
-            (str "$" str-name)
-          :else 
-            (str "ns::$def->" str-name))))
+    (format
+      (if (in? str-name *local-args*) 
+          format-local
+          format-ns-def) str-name)))
 
 ; Public
 

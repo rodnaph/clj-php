@@ -1,6 +1,6 @@
 <?php
 
-namespace clojure\core;
+namespace clojure\lang;
 
 interface ISeq {
 

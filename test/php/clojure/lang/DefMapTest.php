@@ -1,6 +1,6 @@
 <?php
 
-namespace clojure\core;
+namespace clojure\lang;
 
 require_once 'php/bootstrap.php';
 

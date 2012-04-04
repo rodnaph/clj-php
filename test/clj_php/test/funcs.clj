@@ -5,13 +5,12 @@
 
 (facts "about function names"
   (parse-func-name "foo") => "ns::$def->foo"
-  (parse-func-name 'println) => "\\clojure\\core::$def->println"
-  (parse-func-name "println") => "\\clojure\\core::$def->println"
-  (parse-func-name "*") => "\\clojure\\core::$def->multiply")
+  (parse-func-name 'foo) => "ns::$def->foo"
+  (parse-func-name "*") => "ns::$def->multiply")
 
 (facts "about functions as arguments"
   (parse-func-name "foo") => "ns::$def->foo"
-  (parse-func-name "+") => "\\clojure\\core::$def->add")
+  (parse-func-name "+") => "ns::$def->add")
 
 (facts "about local function vars"
   (with-local-args ["foo" 'bar]

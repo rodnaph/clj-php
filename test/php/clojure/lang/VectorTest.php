@@ -1,6 +1,6 @@
 <?php
 
-namespace clojure\core;
+namespace clojure\lang;
 
 require_once 'php/bootstrap.php';
 
@@ -28,7 +28,7 @@ class VectorTest extends \PHPUnit_Framework_TestCase {
 
     public function testNxtReturnsANewSequenceWithAllButFirstItem() {
         $vector = $this->vector->nxt();
-        $this->assertInstanceOf( '\clojure\core\Vector', $vector );
+        $this->assertInstanceOf( '\clojure\lang\Vector', $vector );
         $this->assertEquals( 2, $vector->count() );
     }
 
@@ -39,14 +39,14 @@ class VectorTest extends \PHPUnit_Framework_TestCase {
 
     public function testMoreReturnsNewVectorWithAllButFirstItem() {
         $vector = $this->vector->more();
-        $this->assertInstanceOf( '\clojure\core\Vector', $vector );
+        $this->assertInstanceOf( '\clojure\lang\Vector', $vector );
         $this->assertEquals( 2, $vector->count() );
     }
 
     public function testMoreReturnsEmptyVectorWhenNoItems() {
         $vector = new Vector();
         $more = $vector->more();
-        $this->assertInstanceOf( '\clojure\core\Vector', $more );
+        $this->assertInstanceOf( '\clojure\lang\Vector', $more );
         $this->assertEquals( 0, $more->count() );
     }
 

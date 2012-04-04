@@ -6,7 +6,7 @@
 (def format-def "ns::$def->%s = %s;")
 (def format-defn "ns::$def->%s = function(%s) {return %s};")
 (def format-func "%s(%s)")
-(def format-vector "new \\clojure\\core\\Vector(%s)")
+(def format-vector "new \\clojure\\lang\\Vector(%s)")
 
 (def ^:dynamic *is-statement* true)
 
@@ -115,7 +115,7 @@
         (vector? expr) (parse-vector expr)
         (string? expr) (str "\"" expr "\"")
         (re-matches #"\d+" (str expr)) expr
-        :else (parse-func-name expr))) ; check for ref required? ie. \clojure\core::$add, not $add
+        :else (parse-func-name expr))) ; check for ref required? ie. \clojure\lang::$add, not $add
 
 (defn parse-body 
   "Parse a function body"

@@ -1,6 +1,6 @@
 <?php
 
-namespace clojure\core;
+namespace clojure\lang;
 
 abstract class Seq implements \ArrayAccess, ISeq {
 

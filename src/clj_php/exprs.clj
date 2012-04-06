@@ -7,6 +7,8 @@
 (def format-def "ns::$def->%s = %s;")
 (def format-defn "ns::$def->%s = function(%s) {return %s};")
 (def format-func "%s(%s)")
+(def format-constructor "new \\%s(%s)")
+(def format-method "$%s->%s(%s)")
 (def format-vector "new \\clojure\\lang\\Vector(%s)")
 
 (def ^:dynamic *is-statement* true)
@@ -68,19 +70,31 @@
                   (map parse-expr body))]
     (str def-str body-str)))
 
-; Constructors
+; Interop
 
 (defn constructor?
   [func-name]
   (not (nil?
     (re-matches #".*\.$" (str func-name)))))
 
-(defn parse-constructor
+(defn method?
+  [method-name]
+  (not (nil?
+    (re-matches #"^\..*" (str method-name)))))
+
+(defn- parse-constructor
   [func-name args]
   (let [str-name (str func-name)]
-    (format "new \\%s(%s)"
+    (format format-constructor
             (.substring str-name 0 (dec (count str-name)))
             (parse-args args))))
+
+(defn- parse-method
+  [[method-name obj-name & args]]
+  (format format-method
+          obj-name
+          (.substring (str method-name) 1)
+          (parse-args args)))
 
 ; Functions
 
@@ -89,6 +103,7 @@
   [[func-name & args]]
   (binding [*is-statement* false]
     (cond (constructor? func-name) (parse-constructor func-name args)
+          (method? func-name) (parse-method (cons func-name args))
           :else (format format-func
                         (parse-func-name func-name)
                         (parse-func-names args)))))

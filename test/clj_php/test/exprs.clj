@@ -36,9 +36,13 @@
   (parse-expr '(Foo. 123)) => "new \\Foo(123);")
 
 (facts "about calling methods on objects"
-  )
+  (parse-expr '(.bar foo 123)) => "$foo->bar(123);")
 
 (facts "about constructors"
   (constructor? 'Foo.) => true
   (constructor? "Foo.") => true)
+
+(facts "about method calls"
+  (method? ".bar") => true
+  (method? '.bar) => true)
 

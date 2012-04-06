@@ -10,6 +10,8 @@ class DefMap {
 
         $self = $this;
 
+        $this->defs['php'] = new Php();
+
         $this->defs['add'] = function() {
             return array_reduce(
                 func_get_args(),

@@ -5,7 +5,7 @@ A very naive experiment on compiling Clojure to PHP.  Hmmm...
 
 ## Using
 
-Only the simplest of examples work at the moment, for example:
+Simple example of defining and cailling a function:
 
 ```clojure
 (ns examples.basic)
@@ -13,7 +13,7 @@ Only the simplest of examples work at the moment, for example:
 (defn double [x]
     (* 2 x))
 
-(println (str "Double 2 is..." (double 2)))
+(println (str "Double 2 is... " (double 2)))
 ```
 
 You can compile and run this with:
@@ -27,6 +27,23 @@ Which should output:
 
 ```
 Double 2 is... 4
+```
+
+## Features
+
+At the moment only the basic of Clojure have been implemented, but hopefully this will be a growing list.
+
+* defn
+* namespaces (with :use and :require)
+* PHP integration
+
+## PHP Integration
+
+Integration with PHP is handled (like in ClojureScript) through the *php* import to each namespace.  You
+can then reference any functions from the standard PHP distributions.
+
+```clojure
+(println "Date is: " (php/date "dS F Y, H:i:s"))
 ```
 
 ## Tests

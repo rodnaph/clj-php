@@ -1,0 +1,5 @@
+
+(ns examples.php)
+
+(println "Date is: " (php/date "dS F Y H:i:s"))
+

@@ -2,7 +2,7 @@
 
 namespace clojure\lang;
 
-require_once 'php/bootstrap.php';
+require_once 'src/php/bootstrap.php';
 
 class VectorTest extends \PHPUnit_Framework_TestCase {
 

@@ -2,7 +2,7 @@
 
 namespace clojure;
 
-require_once 'php/bootstrap.php';
+require_once 'src/php/bootstrap.php';
 
 class langTest extends \PHPUnit_Framework_TestCase {
 

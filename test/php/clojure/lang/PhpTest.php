@@ -2,6 +2,8 @@
 
 namespace clojure\lang;
 
+require_once 'src/php/bootstrap.php';
+
 class PhpTest extends \PHPUnit_Framework_TestCase {
 
     private $php;

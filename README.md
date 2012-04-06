@@ -19,8 +19,7 @@ Simple example of defining and cailling a function:
 You can compile and run this with:
 
 ```bash
-lein uberjar
-java -jar clj-php-0.0.1-standalone.jar ./examples/basic.cljp | php
+./bin/cljp examples/basic.cljp
 ```
 
 Which should output:

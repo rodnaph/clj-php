@@ -9,5 +9,5 @@ if [ ! -e $BIN ]; then
     lein uberjar > /dev/null
 fi
 
-java -jar clj-php.jar $@ | php
+java -jar clj-php.jar $@
 

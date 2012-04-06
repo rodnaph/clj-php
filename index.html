@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <title>clj-php by rodnaph</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>clj-php</h1>
+        <h2>Naive experiment turning Clojure to PHP</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/rodnaph/clj-php/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/rodnaph/clj-php/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/rodnaph/clj-php" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>clj-php</h1>
+
+<p>A very naive experiment on compiling Clojure to PHP.  Hmmm...</p>
+
+<h2>Using</h2>
+
+<p>Simple example of defining and cailling a function:</p>
+
+<div class="highlight">
+<pre><span class="p">(</span><span class="kd">ns </span><span class="nv">examples.basic</span><span class="p">)</span>
+
+<span class="p">(</span><span class="kd">defn </span><span class="nb">double </span><span class="p">[</span><span class="nv">x</span><span class="p">]</span>
+    <span class="p">(</span><span class="nb">* </span><span class="mi">2</span> <span class="nv">x</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nb">println </span><span class="p">(</span><span class="nb">str </span><span class="s">"Double 2 is... "</span> <span class="p">(</span><span class="nb">double </span><span class="mi">2</span><span class="p">)))</span>
+</pre>
+</div>
+
+
+<p>You can compile and run this with:</p>
+
+<div class="highlight">
+<pre>./bin/cljp examples/basic.cljp
+</pre>
+</div>
+
+
+<p>Which should output:</p>
+
+<pre><code>Double 2 is... 4
+</code></pre>
+
+<h2>Features</h2>
+
+<p>At the moment only the basic of Clojure have been implemented, but hopefully this will be a growing list.</p>
+
+<ul>
+<li>defn</li>
+<li>namespaces (with :use and :require)</li>
+<li>PHP integration</li>
+</ul><h2>PHP Integration</h2>
+
+<p>Integration with PHP is handled (like in ClojureScript) through the <em>php</em> import to each namespace.  You
+can then reference any functions from the standard PHP distributions.</p>
+
+<div class="highlight">
+<pre><span class="p">(</span><span class="nb">println </span><span class="s">"Date is: "</span> <span class="p">(</span><span class="nf">php/date</span> <span class="s">"dS F Y, H:i:s"</span><span class="p">))</span>
+</pre>
+</div>
+
+
+<h2>Tests</h2>
+
+<p>Tests written with Midje and PHPUnit, run them with...</p>
+
+<div class="highlight">
+<pre>lein midje
+phpunit <span class="nb">test</span>/php
+</pre>
+</div>
+
+
+<h3>Disclaimer</h3>
+
+<p>This is not meant to ever be an actually useful thing, compiling Clojure to PHP is insane.  It's just
+a learning tool for me to get more familiar with Clojure.</p>
+      </section>
+    </div>
+
+    
+  </body>
+</html>

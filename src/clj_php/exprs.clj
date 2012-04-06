@@ -1,7 +1,8 @@
 
 (ns clj-php.exprs
   (:use clj-php.funcs
-        clj-php.ns))
+        clj-php.ns
+        clj-php.php))
 
 (def format-def "ns::$def->%s = %s;")
 (def format-defn "ns::$def->%s = function(%s) {return %s};")
@@ -67,15 +68,30 @@
                   (map parse-expr body))]
     (str def-str body-str)))
 
+; Constructors
+
+(defn constructor?
+  [func-name]
+  (not (nil?
+    (re-matches #".*\.$" (str func-name)))))
+
+(defn parse-constructor
+  [func-name args]
+  (let [str-name (str func-name)]
+    (format "new \\%s(%s)"
+            (.substring str-name 0 (dec (count str-name)))
+            (parse-args args))))
+
 ; Functions
 
 (defn parse-func 
   "Parse a function call"
   [[func-name & args]]
   (binding [*is-statement* false]
-    (format format-func
-            (parse-func-name func-name)
-            (parse-func-names args))))
+    (cond (constructor? func-name) (parse-constructor func-name args)
+          :else (format format-func
+                        (parse-func-name func-name)
+                        (parse-func-names args)))))
 
 ; Namespaces
 

@@ -27,6 +27,10 @@
   [needle haystack]
   (some #{needle} haystack))
 
+(defn- parse-constructor
+  [expr]
+  "CONST")
+
 ; Public
 
 (defn parse-func-name

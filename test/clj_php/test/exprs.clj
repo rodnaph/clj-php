@@ -32,3 +32,13 @@
   (parse-expr '(foo "bar")) => "ns::$def->foo(\"bar\");"
   (parse-expr "foo bar") => "\"foo bar\"")
 
+(facts "about creating objects"
+  (parse-expr '(Foo. 123)) => "new \\Foo(123);")
+
+(facts "about calling methods on objects"
+  )
+
+(facts "about constructors"
+  (constructor? 'Foo.) => true
+  (constructor? "Foo.") => true)
+

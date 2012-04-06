@@ -19,3 +19,6 @@
     (parse-func-name "foo") => "$foo")
   (parse-func-name "foo") => "ns::$def->foo")
 
+(facts "about functions with require prefixes"
+  (parse-func-name "foo/bar") => "ns::$def->foo->bar")
+

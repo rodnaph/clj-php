@@ -1,0 +1,6 @@
+
+(ns examples.req
+  (:require [examples.double :as dbl]))
+
+(println "Double 2 is " (dbl/double 2))
+

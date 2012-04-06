@@ -97,18 +97,45 @@ class DefMap {
         return $class->newInstanceArgs( $items );
     }
 
+    /**
+     * Set a property magic method
+     *
+     * @param string $name
+     * @param mixed $value
+     */
     public function __set( $name, $value ) {
         $this->defs[ $name ] = $value;
     }
 
+    /**
+     * Get a value magic method
+     *
+     * @param string $name
+     *
+     * @return mixed
+     */
     public function __get( $name ) {
         return $this->defs[ $name ];
     }
 
+    /**
+     * Allows calling functions magically
+     *
+     * @param string $name
+     * @param array $args
+     *
+     * @return mixed
+     */
     public function __call( $name, $args ) {
         return call_user_func_array( $this->defs[$name], $args );
     }
 
+    /**
+     * "use" another DefMap, which imports all properties from that
+     * into this DefMap
+     *
+     * @param DefMap $def
+     */
     public function __use( DefMap $def ) {
         $this->defs = array_merge(
             $this->defs,
@@ -116,6 +143,21 @@ class DefMap {
         );
     }
 
+    /**
+     * "requires" another DefMap on this one by name
+     *
+     * @param string $name
+     * @param DefMap $map
+     */
+    public function __require( $name, DefMap $map ) {
+        $this->defs[ $name ] = $map;
+    }
+
+    /**
+     * Returns all the properties defined in this DefMap
+     *
+     * @return array
+     */
     public function defs() {
         return $this->defs;
     }

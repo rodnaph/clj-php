@@ -11,6 +11,8 @@ class DefMapTest extends \PHPUnit_Framework_TestCase {
     protected function setUp() {
         $this->map = new DefMap();
         $this->map->foo = function() { return 2; };
+        $this->other = new DefMap();
+        $this->other->foo = function() { return 3; };
     }
 
     public function testFunctionsCanBeAddedToDefMap() {
@@ -18,14 +20,17 @@ class DefMapTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testDefMapCanUseDefsFromOtherMap() {
-        $map = new DefMap();
-        $map->foo = function() { return 3; };
-        $this->map->__use( $map );
+        $this->map->__use( $this->other );
         $this->assertEquals( 3, $this->map->foo() );
     }
 
     public function testFunctionsCanBeAccessedAsProperties() {
         $this->assertNotNull( $this->map->foo );
+    }
+
+    public function testOtherNamespacesCanBeRequiredInByName() {
+        $this->map->__require( 'baz', $this->other );
+        $this->assertEquals( 3, $this->map->baz->foo() );
     }
 
 }

@@ -9,6 +9,7 @@
                     "ns::$def = new \\clojure\\lang\\DefMap();"
                     "ns::$def->__use(\\clojure\\core\\ns::$def);"))
 (def format-use "ns::$def->__use(\\%s\\ns::$def);")
+(def format-require "ns::$def->__require('%s',\\%s\\ns::$def);")
 
 (def ^:dynamic *includes* (ref []))
 
@@ -17,22 +18,17 @@
   (.replace (str ns-decl) "." "\\"))
 
 (defn- parse-ns-use
-  ""
-  [ns-name]
-  (format format-use 
-          (to-php-ns (first ns-name))))
+  [ns-names]
+  (map #(format format-use 
+                (to-php-ns (first %)))
+       ns-names))
 
 (defn- parse-ns-require
-  ""
-  [body]
-  "req")
-
-(defn- to-ns-incl
-  "Parse the includes body for the namespace"
-  [[type & body]]
-  (condp = type
-    :use (parse-ns-use body)
-    :require (parse-ns-require body)))
+  [ns-names]
+  (map (fn [[ns-name _ req-name]]
+         (format format-require
+                 req-name
+                 (to-php-ns ns-name))) ns-names))
 
 (defn- to-namespaces
   [acc [type & body]]
@@ -42,6 +38,14 @@
       :require (map first body))))
 
 ; Public
+
+(defn to-ns-incl
+  "Parse the includes body for the namespace"
+  [[type & body]]
+  (reduce str ""
+    (condp = type
+      :use (parse-ns-use body)
+      :require (parse-ns-require body))))
 
 (defn parse-ns-body
   "Parse the name declaration of a namespace"

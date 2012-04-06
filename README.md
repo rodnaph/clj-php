@@ -59,3 +59,13 @@ phpunit test/php
 This is not meant to ever be an actually useful thing, compiling Clojure to PHP is insane.  It's just
 a learning tool for me to get more familiar with Clojure.
 
+## TODO
+
+I don't plan to implement *all* Clojure features, some of them don't make sense (like Futures, as PHP
+has no thread support).  These are some things I am looking to implement though:
+
+* destructuring
+* tail recursion
+* lazy sequences
+* macros
+

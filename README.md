@@ -45,6 +45,17 @@ can then reference any functions from the standard PHP distributions.
 (println "Date is: " (php/date "dS F Y, H:i:s"))
 ```
 
+You can also include other PHP libraries and use objects, much like the Java interop provided by Clojure.
+Like this contrived database example:
+
+```
+(ns examples.objects)
+
+(def cnn (DBConnection. "localhost" "root" ""))
+
+(.query cnn "select * from table")
+```
+
 ## Tests
 
 Tests written with Midje and PHPUnit, run them with...

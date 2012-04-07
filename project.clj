@@ -1,5 +1,5 @@
 
-(defproject clj-php "0.0.1"
+(defproject clj-php "0.0.2"
   :description "Clojure to PHP compiler"
   :dependencies [[org.clojure/clojure "1.3.0"]
                  [midje "1.3.1"]

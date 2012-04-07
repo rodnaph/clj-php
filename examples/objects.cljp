@@ -1,7 +1,6 @@
 
-(ns examples.objects
-  (:import "examples/php/Namer.php"))
+(ns examples.objects)
 
-(let [cls (Namer. "Rich")]
-  (println (.getFullName foo "Hickey"))
+(let [foo (Namer. "Rich")]
+  (println (.getFullName foo "Hickey")))
 

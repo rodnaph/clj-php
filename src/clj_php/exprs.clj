@@ -1,14 +1,13 @@
 
 (ns clj-php.exprs
   (:use clj-php.funcs
-        clj-php.ns
-        clj-php.php))
+        clj-php.ns))
 
 (def format-def "ns::$def->%s = %s;")
 (def format-defn "ns::$def->%s = function(%s) {return %s};")
 (def format-func "%s(%s)")
 (def format-constructor "new \\%s(%s)")
-(def format-method "$%s->%s(%s)")
+(def format-method "ns::$def->%s->%s(%s)")
 (def format-vector "new \\clojure\\lang\\Vector(%s)")
 
 (def ^:dynamic *is-statement* true)
@@ -87,14 +86,14 @@
   (let [str-name (str func-name)]
     (format format-constructor
             (.substring str-name 0 (dec (count str-name)))
-            (parse-args args))))
+            (parse-func-names args))))
 
 (defn- parse-method
   [[method-name obj-name & args]]
   (format format-method
           obj-name
           (.substring (str method-name) 1)
-          (parse-args args)))
+          (parse-func-names args)))
 
 ; Functions
 

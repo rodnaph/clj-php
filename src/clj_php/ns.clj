@@ -68,7 +68,8 @@
 (defn ns-to-fs
   "Convert a namespace to its path on the file system"
   [ns-name]
-  (str (str/replace ns-name #"\." "/")
+  (str (str/replace (str/replace ns-name #"\." "/")
+                    #"-" "_")
        ".cljp"))
 
 (defn parse-ns-includes

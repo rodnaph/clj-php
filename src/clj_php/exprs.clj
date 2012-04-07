@@ -1,7 +1,8 @@
 
 (ns clj-php.exprs
   (:use clj-php.funcs
-        clj-php.ns))
+        clj-php.ns
+        clj-php.fs))
 
 (def format-def "ns::$def->%s = %s;")
 (def format-defn "ns::$def->%s = function(%s) {return %s};")
@@ -156,6 +157,6 @@
 (defn parse-file
   "Parse a cljp file, if it hasn't already been"
   [path]
-  (let [exprs (format "'(%s)" (slurp path))]
+  (let [exprs (format "'(%s)" (slurp-resource path))]
     (apply parse-body (load-string exprs))))
 

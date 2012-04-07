@@ -1,7 +1,8 @@
 
 (ns clj-php.core
   (:gen-class)
-  (:use clj-php.exprs))
+  (:use clj-php.exprs
+        clj-php.fs))
 
 (def include-paths [
   "lang/Base"
@@ -20,7 +21,7 @@
 (defn php-includes []
   (->> include-paths
        (map #(str "src/php/clojure/" % ".php"))
-       (map slurp)
+       (map slurp-resource)
        (map #(.substring % 5))
        (reduce str "")))
 

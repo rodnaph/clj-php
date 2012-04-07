@@ -48,7 +48,7 @@
       :require (parse-ns-require body))))
 
 (defn parse-ns-body
-  "Parse the name declaration of a namespace"
+  "Parse the body of a namespace decl"
   [body]
   (reduce str "" 
     (map to-ns-incl body)))

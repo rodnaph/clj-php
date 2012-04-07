@@ -3,12 +3,35 @@
   (:gen-class)
   (:use clj-php.exprs))
 
+(def include-paths [
+  "lang/Base"
+  "lang/Php"
+  "lang/DefMap"
+  "lang"
+  "lang/ISeq"
+  "lang/ASeq"
+  "lang/Cons"
+  "lang/Seq"
+  "lang/LazySeq"
+  "lang/Vector"
+  "lang/CList"
+])
+
 (defn php-includes []
-  "<?php namespace clojure\\lang;include 'src/php/bootstrap.php';")
+  (->> include-paths
+       (map #(str "src/php/clojure/" % ".php"))
+       (map slurp)
+       (map #(.substring % 5))
+       (reduce str "")))
+
+(defn compile-cljp
+  [path]
+  (str "<?php "
+       (php-includes)
+       (parse-file "src/clojure/core.cljp")
+       (parse-file path)))
 
 (defn -main [& args]
   (let [path (first args)]
-    (println (php-includes)
-             (parse-file "src/clojure/core.cljp")
-             (parse-file path))))
+    (println (compile-cljp path))))
 

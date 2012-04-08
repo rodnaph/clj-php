@@ -1,4 +1,3 @@
-
 (ns clj-php.exprs
   (:use clj-php.funcs
         clj-php.ns
@@ -20,10 +19,7 @@
 (defn parse-args
   "Parse args into argument string"
   [args]
-  (let [arg-str (reduce #(str %1 ", " %2) "" args)]
-    (if (> (count arg-str) 2)
-        (subs arg-str 2)
-        arg-str)))
+  (apply str (interpose ", " args)))
 
 (defn parse-defn-args 
   "Parse an argument list"

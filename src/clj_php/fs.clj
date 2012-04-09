@@ -1,5 +1,6 @@
 
-(ns clj-php.fs)
+(ns clj-php.fs
+  (:use clojure.java.io))
 
 ; Public
 
@@ -7,11 +8,8 @@
   "Try to read a resource from current Jar file, and fall back
    to the filesystem for development"
   [resource-name]
-  (try
-    (-> (.getContextClassLoader (Thread/currentThread))
-        (.getResourceAsStream (.substring resource-name 4))
-        (java.io.InputStreamReader.)
-        (slurp))
-    (catch java.lang.NullPointerException npe
-      (slurp resource-name))))
+  (let [jar-resource-name (resource (.substring resource-name 4))]
+    (slurp (if (nil? jar-resource-name)
+               resource-name
+               jar-resource-name))))
 

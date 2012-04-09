@@ -1,5 +1,5 @@
 
-(defproject clj-php "0.0.4"
+(defproject clj-php "0.0.5"
   :description "Clojure to PHP compiler"
   :dependencies [[org.clojure/clojure "1.3.0"]]
   :dev-dependencies [[com.stuartsierra/lazytest "1.2.3"]

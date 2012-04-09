@@ -11,6 +11,7 @@
 (def format-constructor "new \\%s(%s)")
 (def format-method "ns::$def->%s->%s(%s)")
 (def format-vector "new \\clojure\\lang\\Vector(%s)")
+(def format-arg "$%s = array_shift($__args);")
 
 (def ^:dynamic *is-statement* true)
 
@@ -27,7 +28,7 @@
   "Parse an argument list"
   [args]
   (apply str
-    (map #(format "$%s = array_shift($__args);" %) args)))
+    (map #(format format-arg %) args)))
 
 (defn parse-func-names
   "Parse arguments to a function call"

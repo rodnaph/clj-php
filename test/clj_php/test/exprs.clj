@@ -4,6 +4,7 @@
         midje.sweet))
 
 (facts "about defns"
+  (parse-defn '(defn foo [x & y])) => "ns::$def->foo = function() {$__args = func_get_args();$x = array_shift($__args);$y = $__args;return null;}"
   (parse-defn '(defn foo [])) => "ns::$def->foo = function() {$__args = func_get_args();return null;};"
   (parse-defn '(defn foo [x] (+ x x))) => "ns::$def->foo = function() {$__args = func_get_args();$x = array_shift($__args);return ns::$def->add($x, $x);};"
   (parse-defn '(defn foo [a b])) => "ns::$def->foo = function() {$__args = func_get_args();$a = array_shift($__args);$b = array_shift($__args);return null;};")

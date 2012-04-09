@@ -4,13 +4,9 @@
         midje.sweet))
 
 (facts "about defns"
-  (parse-defn '(defn foo [])) => "ns::$def->foo = function() {return null;};"
-  (parse-defn '(defn foo [x] (+ x x))) => "ns::$def->foo = function($x) {return ns::$def->add($x, $x);};"
-  (parse-defn '(defn foo [a b])) => "ns::$def->foo = function($a, $b) {return null;};")
-
-(facts "about defn arguments"
-  (parse-defn-args '[a]) => "$a"
-  (parse-defn-args '[foo bar]) => "$foo, $bar")
+  (parse-defn '(defn foo [])) => "ns::$def->foo = function() {$__args = func_get_args();return null;};"
+  (parse-defn '(defn foo [x] (+ x x))) => "ns::$def->foo = function() {$__args = func_get_args();$x = array_shift($__args);return ns::$def->add($x, $x);};"
+  (parse-defn '(defn foo [a b])) => "ns::$def->foo = function() {$__args = func_get_args();$a = array_shift($__args);$b = array_shift($__args);return null;};")
 
 (facts "about def'ing vars"
   (parse-def '(def x [1 2 3])) => "ns::$def->x = new \\clojure\\lang\\Vector(1, 2, 3);"
@@ -21,7 +17,7 @@
   (parse-vector '[1 2 3]) => "new \\clojure\\lang\\Vector(1, 2, 3)")
 
 (facts "about parsing expression bodies"
-  (parse-body '(def x 1) '(defn foo [x])) => "ns::$def->x = 1;ns::$def->foo = function($x) {return null;};"
+  (parse-body '(def x 1) '(defn foo [x])) => "ns::$def->x = 1;ns::$def->foo = function() {$__args = func_get_args();$x = array_shift($__args);return null;};"
   (parse-body '(def x 1) '(def y 2)) => "ns::$def->x = 1;ns::$def->y = 2;")
 
 (facts "about let bindings"

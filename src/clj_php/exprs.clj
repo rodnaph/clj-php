@@ -6,7 +6,7 @@
         clj-php.vars))
 
 (def format-def "ns::$def->%s = %s;")
-(def format-defn "ns::$def->%s = function(%s) {return %s};")
+(def format-defn "ns::$def->%s = function() {$__args = func_get_args();%sreturn %s};")
 (def format-func "%s(%s)")
 (def format-constructor "new \\%s(%s)")
 (def format-method "ns::$def->%s->%s(%s)")
@@ -26,14 +26,16 @@
 (defn parse-defn-args 
   "Parse an argument list"
   [args]
-  (parse-args
-    (map (partial str "$") args)))
+  (apply str
+    (map #(format "$%s = array_shift($__args);" %) args)))
 
 (defn parse-func-names
   "Parse arguments to a function call"
   [args]
-  (parse-args 
-    (map parse-expr args)))
+  (->> args
+       (map parse-expr)
+       (interpose ", ")
+       (apply str)))
 
 ; Definitions
 

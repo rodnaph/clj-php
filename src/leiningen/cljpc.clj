@@ -1,6 +1,7 @@
 
 (ns leiningen.cljpc
-  (:use clj-php.core))
+  (:use clj-php.core
+        [leiningen.core.eval :only [eval-in-project]]))
 
 (defn- default-path
   "Returns the default include path for the project"
@@ -13,5 +14,6 @@
   [project & args]
   (let [path (first args)
         path (if (nil? path) (default-path project) path)]
-    (println (compile-cljp path))))
+    (eval-in-project project
+       `(println (compile-cljp ~path)))))
 

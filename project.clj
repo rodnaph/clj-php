@@ -1,5 +1,5 @@
 
-(defproject clj-php "0.0.5"
+(defproject clj-php "0.0.6"
   :description "Clojure to PHP compiler"
   :dependencies [[org.clojure/clojure "1.3.0"]]
   :dev-dependencies [[com.stuartsierra/lazytest "1.2.3"]
@@ -7,5 +7,6 @@
                      [midje "1.3.1" :exclusions [org.clojure/clojure]]]
   :repositories {"stuart" "http://stuartsierra.com/maven2"}
   :main clj-php.core
+  :eval-in-leiningen true
   :uberjar-name "clj-php.jar")
 

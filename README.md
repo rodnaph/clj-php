@@ -84,6 +84,7 @@ a learning tool for me to get more familiar with Clojure.
 I don't plan to implement *all* Clojure features, some of them don't make sense (like Futures, as PHP
 has no thread support).  These are some things I am looking to implement though:
 
+* variable arity
 * destructuring
 * tail recursion
 * lazy sequences

@@ -1,13 +1,7 @@
 #!/bin/sh
 
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-BIN="clj-php.jar"
 
-cd $DIR/../
+$DIR/cljpc $@ | php
 
-if [ ! -e $BIN ]; then
-    lein uberjar > /dev/null
-fi
-
-java -jar clj-php.jar $@ | php
 

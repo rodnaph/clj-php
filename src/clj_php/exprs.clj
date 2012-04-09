@@ -1,11 +1,13 @@
-
 (ns clj-php.exprs
   (:use clj-php.funcs
-        clj-php.ns))
+        clj-php.ns
+        clj-php.fs))
 
 (def format-def "ns::$def->%s = %s;")
 (def format-defn "ns::$def->%s = function(%s) {return %s};")
 (def format-func "%s(%s)")
+(def format-constructor "new \\%s(%s)")
+(def format-method "ns::$def->%s->%s(%s)")
 (def format-vector "new \\clojure\\lang\\Vector(%s)")
 
 (def ^:dynamic *is-statement* true)
@@ -17,10 +19,7 @@
 (defn parse-args
   "Parse args into argument string"
   [args]
-  (let [arg-str (reduce #(str %1 ", " %2) "" args)]
-    (if (> (count arg-str) 2)
-        (subs arg-str 2)
-        arg-str)))
+  (apply str (interpose ", " args)))
 
 (defn parse-defn-args 
   "Parse an argument list"
@@ -67,15 +66,43 @@
                   (map parse-expr body))]
     (str def-str body-str)))
 
+; Interop
+
+(defn constructor?
+  [func-name]
+  (not (nil?
+    (re-matches #".*\.$" (str func-name)))))
+
+(defn method?
+  [method-name]
+  (not (nil?
+    (re-matches #"^\..*" (str method-name)))))
+
+(defn- parse-constructor
+  [func-name args]
+  (let [str-name (str func-name)]
+    (format format-constructor
+            (.substring str-name 0 (dec (count str-name)))
+            (parse-func-names args))))
+
+(defn- parse-method
+  [[method-name obj-name & args]]
+  (format format-method
+          obj-name
+          (.substring (str method-name) 1)
+          (parse-func-names args)))
+
 ; Functions
 
 (defn parse-func 
   "Parse a function call"
   [[func-name & args]]
   (binding [*is-statement* false]
-    (format format-func
-            (parse-func-name func-name)
-            (parse-func-names args))))
+    (cond (constructor? func-name) (parse-constructor func-name args)
+          (method? func-name) (parse-method (cons func-name args))
+          :else (format format-func
+                        (parse-func-name func-name)
+                        (parse-func-names args)))))
 
 ; Namespaces
 
@@ -126,6 +153,6 @@
 (defn parse-file
   "Parse a cljp file, if it hasn't already been"
   [path]
-  (let [exprs (format "'(%s)" (slurp path))]
+  (let [exprs (format "'(%s)" (slurp-resource path))]
     (apply parse-body (load-string exprs))))
 

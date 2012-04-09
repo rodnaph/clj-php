@@ -48,7 +48,7 @@
       :require (parse-ns-require body))))
 
 (defn parse-ns-body
-  "Parse the name declaration of a namespace"
+  "Parse the body of a namespace decl"
   [body]
   (reduce str "" 
     (map to-ns-incl body)))
@@ -68,7 +68,8 @@
 (defn ns-to-fs
   "Convert a namespace to its path on the file system"
   [ns-name]
-  (str (str/replace ns-name #"\." "/")
+  (str (str/replace (str/replace ns-name #"\." "/")
+                    #"-" "_")
        ".cljp"))
 
 (defn parse-ns-includes

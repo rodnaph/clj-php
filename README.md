@@ -1,4 +1,3 @@
-
 # clj-php
 
 A very naive experiment on compiling Clojure to PHP.  Hmmm...
@@ -43,6 +42,17 @@ can then reference any functions from the standard PHP distributions.
 
 ```clojure
 (println "Date is: " (php/date "dS F Y, H:i:s"))
+```
+
+You can also include other PHP libraries and use objects, much like the Java interop provided by Clojure.
+Like this contrived database example:
+
+```clojure
+(ns examples.objects)
+
+(def cnn (DBConnection. "localhost" "root" ""))
+
+(.query cnn "select * from table")
 ```
 
 ## Tests

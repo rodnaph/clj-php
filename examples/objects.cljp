@@ -1,0 +1,6 @@
+
+(ns examples.objects)
+
+(let [foo (Namer. "Rich")]
+  (println (.getFullName foo "Hickey")))
+

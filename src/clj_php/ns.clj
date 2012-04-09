@@ -1,5 +1,6 @@
 
 (ns clj-php.ns
+  (:use clj-php.vars)
   (:require [clojure.string :as str]))
 
 (def decl-format (str "namespace %s;"
@@ -10,6 +11,7 @@
                     "ns::$def->__use(\\clojure\\core\\ns::$def);"))
 (def format-use "ns::$def->__use(\\%s\\ns::$def);")
 (def format-require "ns::$def->__require('%s',\\%s\\ns::$def);")
+(def format-include "include_once '%s/%s';")
 
 (def ^:dynamic *includes* (ref []))
 
@@ -35,7 +37,21 @@
   (concat acc
     (condp = type
       :use body
+      :include ()
       :require (map first body))))
+
+(defn- parse-include-path
+  "Parse an include path from current file"
+  [inc-path]
+  (let [file (java.io.File. *cljp-file*)]
+    (format format-include
+             (.getParent file)
+             inc-path)))
+
+(defn- parse-ns-include
+  "Allows including arbitrary files"
+  [inc-names]
+  (map parse-include-path inc-names))
 
 ; Public
 
@@ -45,7 +61,8 @@
   (reduce str ""
     (condp = type
       :use (parse-ns-use body)
-      :require (parse-ns-require body))))
+      :require (parse-ns-require body)
+      :include (parse-ns-include body))))
 
 (defn parse-ns-body
   "Parse the body of a namespace decl"

@@ -55,6 +55,16 @@ Like this contrived database example:
 (.query cnn "select * from table")
 ```
 
+### Including PHP Files
+
+You can also include PHP files using *:include*.  This is executed at runtime though, so should be used
+for any application bootstrap (like pulling in required PHP libraries).
+
+```clojure
+(ns examples
+  (:include "path/to/bootstrap.php"))
+```
+
 ## Tests
 
 Tests written with Midje and PHPUnit, run them with...
